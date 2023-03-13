@@ -25,23 +25,63 @@
 
 {{--                 UNLESS                  --}}
 {{-- @unless executa se o retorno for false --}}
-@unless ($fornecedores[0]['status'] == 'S') <!-- Se o retorno da condição for false-->
+{{--
+    @unless ($fornecedores[0]['status'] == 'S') <!-- Se o retorno da condição for false-->
     Fornecedor Inativo
 @endunless
+--}}
 
 
 
 {{--                 ISSET                  --}}
 {{-- if(isset($variavel)) {} // Retornar true se a variável estiver definida --}}
+
+
+
+{{--                 EMPTY                  --}}
+{{--
+    - ''
+    - 0
+    - 0.0
+    - '0'
+    - NULL
+    - FALSE
+    - ARRAY()
+    - $var
+--}}
+
+
+
 @isset($fornecedores)
 
-    Fornecedor: {{ $fornecedores[0]['nome'] }}
-    <br>
-    Status: {{ $fornecedores[0]['status'] }}
-    <br>
-    @if ( !($fornecedores[0]['status'] == 'S') )
-        Fornecedor Inativo
-    @endif
-    <br>
-    
+    @forelse ($fornecedores as $fornecedor)
+
+    @dd($loop)
+
+        Iteração atual: {{ $loop->iteration }}
+        <br>
+        Fornecedor: {{ $fornecedor['nome'] }}
+        <br>
+        Status: {{ $fornecedor['status'] }}
+        <br>
+        CNPJ: {{ $fornecedor['cnpj'] ?? 'Dado não foi preenchido'}}
+        <br>
+        Telefone: ({{ $fornecedor['ddd'] ?? ''}})
+        {{ $fornecedor['telefone'] ?? ''}}
+        <br>
+        @if ($loop->first)
+            Primeira Iteração do loop
+        @endif
+        @if ($loop->last)
+            Última Iteração do loop
+            <br>
+            Total de Registro: {{ $loop->count }}
+        @endif
+        <hr>
+        @empty 
+            Não existem fornecedores cadastrados!
+    @endforelse
+        
 @endisset
+
+<br>
